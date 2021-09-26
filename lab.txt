@@ -14,3 +14,4 @@ int main()
 	cin.get();
 	return 0;
 }
+// ще щось дописав
