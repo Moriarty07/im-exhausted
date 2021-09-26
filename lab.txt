@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cmath>
 using namespace std;
 int main()
@@ -15,3 +15,4 @@ int main()
 	return 0;
 }
 // ще щось дописав
+// ну ок ще щось допишу через гуі
