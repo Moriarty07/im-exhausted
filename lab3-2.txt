@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	double x, a, b, c, f;
+	cout << "x="; cin >> x;
+	cout << "a="; cin >> a;
+	cout << "b="; cin >> b;
+	cout << "c="; cin >> c;
+	//1 спосіб скорочена;
+	if (x < 3 && b != 0)
+		f = a * x * x - b * x + c;
+	if (x > 3 && b == 0)
+		f = (x - a) / (x - c);
+	if (!(x < 3 && b != 0) && !(x > 3 && b == 0))
+		f = x / c;
+	cout << endl;
+	cout << "1) F=" << f << endl;
+	//2 спосіб повне;
+	if (x < 3 && b != 0)
+		f = a * x * x - b * x + c;
+	else
+		if (x > 3 && b == 0)
+			f = (x - a) / (x - c);
+		else
+			f = x / c;
+	cout << "2) F=" << f << endl;
+	cin.get();
+	return 0;
+}
