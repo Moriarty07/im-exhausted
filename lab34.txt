@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	double x=0, y=0, a=0, b=0, R=0;
+	cout << "x="; cin >> x;
+	cout << "y="; cin >> y;
+	cout << "a="; cin >> a;
+	cout << "b="; cin >> b;
+	cout << "R="; cin >> R;
+	bool z1 = x * x + y * y <= R * R && x >= -a && x <= 0 && y >= -b && y <= 0;
+	bool z2 = x * x + y * y >= R && x >= R && x <= a && y >= b && y <= R;
+	if(z1||z2)
+		cout << "yes" << endl;
+	else
+		cout << "no" << endl;
+	cin.get();
+	return 0;
+}
