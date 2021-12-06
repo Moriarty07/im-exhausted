@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+void Create(int* b, const int size, const int Low, const int High)
+{
+	for (int i = 0; i < size; i++)
+		b[i] = Low + rand() % (High - Low + 1);
+
+}
+
+void Print(int* b, const int size)
+{
+	for (int i = 0; i < size; i++)
+		cout << setw(4) << b[i];
+	cout << endl;
+}
+double Math1(int* b, const int size, int i, int z) {
+
+	for (i = 0;i < 24; i++) {
+		if (b[i] < 0 && (b[i] == -2 || b[i] == -4 || b[i] == -6 || b[i] == -8 || b[i] == -10 || b[i] == -12 || b[i] == -14)) {
+			z = z + 1;
+
+		}
+	}
+	return z;
+}
+
+double Math2(int* b, const int size, int i, int z) {
+
+	for (i = 0;i < 24; i++) {
+		if (b[i] < 0 && (b[i] == -2 || b[i] == -4 || b[i] == -6 || b[i] == -8 || b[i] == -10 || b[i] == -12 || b[i] == -14)) {
+			z = z + b[i];
+		}
+	}
+	return z;
+}
+void Math3(int* b, const int size, int i) {
+
+	for (i = 0;i < 24; i++) {
+		if (b[i] < 0 && (b[i] == -2 || b[i] == -4 || b[i] == -6 || b[i] == -8 || b[i] == -10 || b[i] == -12 || b[i] == -14)) {
+			b[i] = 0;
+		}
+	}
+	Print(b, size);
+}
+int main()
+{
+	srand((unsigned)time(NULL));
+	const int n = 24;
+	int b[n];
+	int Low = -15;
+	int High = 75;
+	Create(b, n, Low, High);
+	Print(b, n);
+	cout << "Kilkist elementiv: " << Math1(b, n, 0, 0) << endl;
+	cout << "Sum elementiv: " << Math2(b, n, 0, 0) << endl;
+	Math3(b, n, 0);
+	return 0;
+} 
