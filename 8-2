@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+using namespace std;
+bool Find_Letter(const string s)
+{
+	bool Letter_a;
+	int start = 0;
+	int n = s.length();
+	int len = 0;
+	int k = 0;
+	for (int i = 0; i < n; i++)
+	{
+		
+		if (s[i] != ' ')
+			k++;
+		else
+		{
+			
+			if (s.find_first_of("a", start, k) != -1)
+				Letter_a = true;
+			else
+			{
+				Letter_a = false;
+				len = len + k;
+				k = 0;
+			}
+				
+		}
+			
+			
+		
+		start = start + len + 1;
+	}
+	return Letter_a;
+}
+int main()
+{
+	string str;
+	cout << "Enter string:" << endl;
+	getline(cin, str);
+	cout << "Length of min groups of digits: " << Find_Letter(str) << endl;
+	return 0;
+}
