@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+class Route {
+public:
+    Route() :NumberRoute(0) {
+
+    }
+
+    Route(std::string b, std::string e, int n)
+        :BeginRoute(b), EndRoute(e), NumberRoute(n) {
+
+    }
+
+    bool operator() (const Route& lhs, const Route& rhs) {
+        return lhs.NumberRoute > rhs.NumberRoute;
+    }
+
+    bool operator == (int value) {
+        return NumberRoute == value;
+    }
+    friend std::ostream& operator << (std::ostream& lhs, const Route& rhs);
+    friend std::istream& operator >> (std::istream& lhs, Route& rhs);
+private:
+    std::string BeginRoute;
+    std::string EndRoute;
+    int NumberRoute;
+};
+
+std::ostream& operator << (std::ostream& lhs, const Route& rhs) {
+    lhs << "Begin Route: " << rhs.BeginRoute << '\n'
+        << "End Route: " << rhs.EndRoute << '\n'
+        << "Number Route: " << rhs.NumberRoute << '\n';
+    return lhs;
+}
+std::istream& operator >> (std::istream& lhs, Route& rhs) {
+    std::cout << "Input begin route :";
+    lhs >> rhs.BeginRoute;
+    std::cout << "Input end route :";
+    lhs >> rhs.EndRoute;
+    std::cout << "Input number route :";
+    lhs >> rhs.NumberRoute;
+    return lhs;
+}
+int main()
+{
+    Route route[8];
+    std::cin >> route[0] >> route[1] >> route[2];
+    std::cout << route[0] << route[1] << route[2];
+    std::sort(route, route + 8, Route());
+    std::cout << "Sort: \n";
+    std::cout << route[0] << route[1] << route[2];
+
+    std::cout << "Input find number: ";
+    int number; std::cin >> number;
+    Route* i = std::find(route, route + 8, number);//find number route(10)
+    std::cout << *i << '\n';
+    return 0;
+}
