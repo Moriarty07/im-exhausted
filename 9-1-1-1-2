@@ -1,0 +1,94 @@
+#include <iostream> 
+#include <string> 
+#include <Windows.h> 
+
+using namespace std;
+
+// enum Predmet { Mathematica, Fizyka };
+
+// enum Kurs { I = 1, II, III, IV, V, VI };
+// enum Spec { ME, MF, FI, IM, KN };
+struct Student
+{
+	string prizv;
+	string kurs;
+	string spec;
+	string predmet;
+	int ostinka;
+	};
+
+void Create(Student* p, const int N)
+{
+	
+	for (int i = 0; i < N; i++)
+	{
+		cout << "Студент № " << i + 1 << ":" << endl;
+		cin.get(); // очищуємо буфер клавіатури – бо залишаються символи 
+		cin.sync(); // "кінець рядка", які не дають ввести наступний літерний рядок 
+		cout << " прізвище: "; getline(cin, p[i].prizv);
+      cout << " курс.: "; getline(cin, p[i].kurs);
+	   cout << "спеціальність.: "; getline(cin, p[i].spec);;
+		cout << " предмет :"; getline(cin, p[i].predmet);
+		cout << " оцінка : "; cin >> p[i].ostinka;
+		cout << endl;
+	}
+}
+
+int kil_4M(Student* p, const int N)
+{
+	int km = 0;
+	
+	for (int i = 0; i < N; i++)
+	{
+		
+		if (p[i].predmet=="Математика" && p[i].ostinka ==4)
+			km++;
+				}
+	return km;
+}
+int kil_4F(Student* p, const int N)
+{
+	int kf = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+
+		if (p[i].predmet == "Фізика" && p[i].ostinka == 4)
+			kf++;
+	}
+	return kf;
+}
+double Prostent_5(Student* p, const int N)
+{
+		int k = 0;
+	double vidminno;
+	for (int i = 0; i < N; i++)
+	{
+		if (p[i].predmet == "Фізика" && p[i].ostinka == 5)
+			k++;
+		if (p[i].predmet == "Математика" && p[i].ostinka == 5)
+			k++;
+	}
+	vidminno = (double)k / N * 100;
+	return vidminno;
+}
+
+int main()
+{ // забезпечення відображення кирилиці: 
+	SetConsoleCP(1251); // встановлення сторінки win-cp1251 в потік вводу 
+	SetConsoleOutputCP(1251); // встановлення сторінки win-cp1251 в потік виводу 
+	int N;
+	int km;
+	int kf;
+	double vidminno;
+	cout << "Введіть N: "; cin >> N;
+	Student* p = new Student[N];
+	Create(p, N);
+	km=kil_4M(p, N);
+	cout <<"К-сть 4 з математики -"<< km <<endl;
+	kf=kil_4F(p, N);
+	cout << "К-сть 4 з фізики -" << kf<<endl ;
+	vidminno=Prostent_5(p, N);
+	cout << "Процент 5 з фізики і математики разом -" << vidminno<<endl ;
+	return 0;
+}
