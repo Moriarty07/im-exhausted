@@ -1,0 +1,132 @@
+#include <iostream> 
+#include <string> 
+#include <Windows.h> 
+
+using namespace std;
+
+// enum Predmet { Mathematica, Fizyka };
+
+// enum Kurs { I = 1, II, III, IV, V, VI };
+// enum Spec { ME, MF, FI, IM, KN };
+struct Student
+{
+	string prizv;
+	int kurs;
+	double  ser_ostinka;
+};
+
+
+void Create(Student* p, const int N)
+{
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "Студент № " << i + 1 << ":" << endl;
+		cin.get(); // очищуємо буфер клавіатури – бо залишаються символи 
+		cin.sync(); // "кінець рядка", які не дають ввести наступний літерний рядок 
+		cout << " прізвище: "; getline(cin, p[i].prizv);
+		cout << " курс.: "; cin>> p[i].kurs;
+		cout << "Середня оцінка : "; cin >> p[i].ser_ostinka;
+		cout << endl;
+	}
+}
+void Sort(Student* p, const int N)
+{
+	Student tmp;
+	for (int i0 = 0; i0 < N - 1; i0++) // метод "бульбашки"
+		for (int i1 = 0; i1 < N - i0 - 1; i1++)
+			if ((p[i1]. ser_ostinka > p[i1 + 1].ser_ostinka) || ((p[i1].ser_ostinka == p[i1 + 1].ser_ostinka) &&
+				(p[i1].kurs > p[i1 + 1].kurs)) || ((p[i1].ser_ostinka == p[i1 + 1].ser_ostinka) &&
+					(p[i1].prizv < p[i1 + 1].prizv)))
+			{
+				tmp = p[i1];
+				p[i1] = p[i1 + 1];
+				p[i1 + 1] = tmp;
+			}
+}
+int* IndexSort(Student* p, const int N)
+{ // використовуємо метод вставки для формування індексного масиву
+ //
+ // int i, j, value;
+ // for (i = 1; i < length; i++) {
+ // value = a[i];
+ // for (j = i - 1; j >= 0 && a[j] > value; j--) {
+ // a[j + 1] = a[j];
+ // }
+ // a[j + 1] = value;
+ // }
+			int* I = new int[N]; // створили індексний масив
+	for (int i = 0; i < N; i++)
+		I[i] = i; // заповнили його початковими даними
+	int k, j, value; // починаємо сортувати масив індексів
+	for (k = 1; k < N; k++)
+	{
+		value = I[k];
+		for (j = k - 1;
+			j >= 0 && ((p[I[j]].ser_ostinka > p[value].ser_ostinka) ||
+				((p[I[j]].ser_ostinka == p[value].ser_ostinka) &&
+					(p[I[j]].kurs > p[value].kurs)) ||
+			((p[I[j]].ser_ostinka == p[value].ser_ostinka) &&
+				(p[I[j]].prizv < p[value].prizv)));j--)
+		{
+			I[j + 1] = I[j];
+		}
+		I[j + 1] = value;
+	}
+	return I;
+}
+void PrintSorted(Student* p, const int N)
+{
+	for (int i = 0; i < N; i++)
+	{
+		cout << p[i].prizv<<"   ";
+		cout << p[i].kurs << "   ";
+			cout << p[i].ser_ostinka << "   ";
+		 cout << endl;
+	}
+}
+int BinSearch(Student* p, const int N, const string prizv, const int kurs, const double ser_ostinka)
+{ // повертає індекс знайденого елемента або -1, якщо шуканий елемент відсутній
+	int L = 0, R = N - 1, m;
+	do {
+		m = (L + R) / 2;
+		if (p[m].prizv == prizv && p[m].kurs == kurs && p[m].ser_ostinka== ser_ostinka)
+			return m;
+		if ((p[m].ser_ostinka < ser_ostinka)
+			||
+			(p[m].ser_ostinka == ser_ostinka &&
+				  p[m].prizv < prizv))
+		{
+			L = m + 1;
+		}
+		else
+		{
+			R = m - 1;
+		}
+	} while (L <= R);
+	return -1;
+}
+
+int main()
+{
+	// забезпечення відображення кирилиці: 
+	SetConsoleCP(1251); // встановлення сторінки win-cp1251 в потік вводу 
+	SetConsoleOutputCP(1251); // встановлення сторінки win-cp1251 в потік виводу 
+	int N;
+	cout << "Введіть N: "; cin >> N;
+	Student* p = new Student[N];
+	int* I = new int[N];
+	int k;
+	Create(p, N);
+	Sort(p, N);
+	PrintSorted(p, N);
+	IndexSort(p, N);
+	k=BinSearch(p, N, "Ясюра", 1, 4.5);
+	if (k == -1)
+		cout << "Студента на вказаному курсі з середньою оцінкою 4.5-немає";
+	else
+		cout << "Є";
+	cout << endl;
+	return 0;
+
+}
