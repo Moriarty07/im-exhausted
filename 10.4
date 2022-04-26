@@ -1,0 +1,84 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+void CreateTXT(char* fname) // створення файлу з введених рядків
+{
+	ofstream fout(fname); // відкрили файл для запису
+	char ch; // відповідь користувача – чи продовжувати введення
+	string s; // введений користувачем рядок
+	do
+	{
+		cin.get(); // очищуємо буфер клавіатури – щоб не було символу
+		cin.sync(); // "кінець рядка", який залишився після вводу числа
+		cout << "enter line: "; getline(cin, s); // ввели рядок
+		fout << s << endl; // записали його у файл
+		cout << "continue? (y/n): "; cin >> ch;
+	} while (ch == 'y' || ch == 'Y');
+	cout << endl;
+}
+
+
+
+void PrintTXT(char* fname) // виведення файлу на екран
+{
+	ifstream fin(fname); // відкрили файл для зчитування
+	string s; // прочитаний рядок
+	while (getline(fin, s)) // поки можна прочитати рядок
+	{
+		cout << s << endl; // виводимо його на екран
+	}
+	cout << endl;
+}
+
+int ProcessTXT3(char* fname, const char str) // пошук слів з однаковим закінченням
+{
+	ifstream fin(fname); // відкрили файл для зчитування
+	string s; // прочитаний рядок
+	int k=0; // кількість слів з однаковим закінченням
+	int n;
+	while (getline(fin, s)) // поки можна прочитати рядок
+	{
+		n = s.length();
+		if (s[0]==str && s[n-1] == str)
+		k++ ;
+	}
+	return k;
+}
+void CreateTXT1(char* fname1, const char str,char*fname2) // створення файлу з іншого файлу
+{
+	ofstream fout(fname2); 	// відкрили файл для запису
+	ifstream fin(fname1);// відкрили файл для зчитування
+	string s;
+	int n;
+	while (getline(fin, s)) // поки можна прочитати рядок
+	{
+		n = s.length();
+		if (s[0] == str && s[n - 1] == str)
+			fout << s << endl; // записати у дугий файл
+	}
+	cout << endl;
+}
+
+int main()
+{
+	// text files
+	char fname1[100];
+	char fname2[100];
+	int k;
+	cout << "enter file name1: "; cin >> fname1;
+	CreateTXT(fname1); // ввели рядки файлу з клавіатури
+	PrintTXT(fname1); // вивели вміст першого файлу на екран
+	char str;
+	cout << "symvol "; cin >> str;
+	cout << "enter file name2: "; cin >> fname2;
+	k = ProcessTXT3(fname1, str);
+	cout << "k= " << k;
+	CreateTXT1(fname1, str, fname2);
+	PrintTXT(fname2);
+	return 0;
+}
+
+
