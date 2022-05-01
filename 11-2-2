@@ -1,0 +1,118 @@
+
+#include <iostream> 
+#include <fstream> 
+#include <string>
+
+
+using namespace std;
+struct Student
+{
+	char name[64];
+	char predmet[15];
+	int ostinka;
+};
+void enter_save(char* fname)
+{
+	ofstream f(fname, ios::binary);
+	if (!f)
+	{
+		cerr << "Error opening file '" << fname << "'" << endl;
+		return;
+	}
+	Student  student1;
+	char ch;
+	do
+	{
+		cout << endl;
+		cout << "name: "; cin.sync();
+		cin >> student1.name;
+		cout << "predmet: "; cin >> student1.predmet;
+		cout << "ostinka: "; cin >> student1.ostinka;
+		if (!f.write((char*)&student1, sizeof(Student)))
+		{
+			cerr << "Error writing file." << endl;
+		}
+		cout << "Continue? (Y/N) "; cin >> ch;
+	} while (ch == 'Y' || ch == 'y');
+}
+
+void load_print(char* fname)
+{
+	ifstream f(fname, ios::binary);
+	if (!f)
+	{
+		cerr << "Error opening file '" << fname << "'" << endl;
+		return;
+	}
+	Student  student1;
+
+	while (f.read((char*)&student1, sizeof(Student)))
+	{
+		cout << endl;
+		cout << "name: " << student1.name << endl;
+		cout << "predmet: " << student1.predmet << endl;
+		cout << "ostinka: " << student1.ostinka << endl;
+	}
+}
+
+int Kill_ostinka(char* fname, char* predmet, const int ostinka)
+{
+	ifstream f(fname, ios::binary);
+		Student  student1;
+	int k = 0;
+	while (f.read((char*)&student1, sizeof(Student)))
+	{
+		string str1 = student1.predmet;
+		string str2 = predmet; 
+		int m1 = str1.compare(str2);
+		if ((m1== 0) && (student1.ostinka == ostinka))
+			k++;
+	}
+	f.close();
+	return k;
+
+}
+
+double Proshent_ostinka(char* fname, char* predmet1, char* predmet2, const int ostinka)
+{	
+		ifstream f(fname, ios::binary);
+		Student  student1;
+	int k1 = 0;
+	int N = 0;
+	double vidminno;
+	while (f.read((char*)&student1, sizeof(Student)))
+	{
+		string str1 = student1.predmet;
+		string str2 = predmet1;
+		int k2 = str1.compare(str2);
+		string str3 = predmet2;
+		int k3 = str1.compare(str3);
+				if ((k2==0) && (student1.ostinka == ostinka))
+								k1++;
+			if ((k3 == 0) && (student1.ostinka == ostinka))
+					k1++;
+			N++;
+	}
+	vidminno = k1/N*100;
+	f.close();
+	return vidminno;
+}
+
+int main()
+{
+	char fname[100]; // ім'я файлу
+	cout << "enter file name 1: "; cin >> fname;
+	char predmet1[15]; 	cout << "enter predmet 1: "; cin >> predmet1; // перший предмет
+	char predmet2[15]; 	cout << "enter predmet 2: "; cin >> predmet2;  // другий предмет
+	int m;
+	double vidminno;
+	enter_save(fname);
+	load_print(fname);
+	m = Kill_ostinka(fname,predmet1, 4);
+	cout << "ostinka mathematyka: =" << m << endl;
+	m = Kill_ostinka( fname,predmet2, 4);
+	cout << "ostinka: fizyka: =" << m << endl;
+	vidminno = Proshent_ostinka(fname, predmet1, predmet2, 5);
+	cout << "prostet vidminno: mathematyka:fizyka = " << vidminno << endl;
+	return 0;
+}
