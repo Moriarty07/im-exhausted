@@ -1,0 +1,50 @@
+
+#include <iostream>
+#include <fstream>
+#include <time.h>
+
+using namespace std;
+
+void Create(const char* fName, const int n) //  створення файлу цілих чисел
+{
+	srand((unsigned)time(NULL));
+	ofstream f(fName, ios::binary);
+	for (int i = 0; i < n; i++)
+	{
+
+		f.write((char*)&i, sizeof(i));
+	}
+}
+void Print(const char* fName) //  перегляд вмістимо файлу 
+{
+	cout << endl << "\nfile \"" << fName << "\":\n";
+	ifstream f(fName, ios::binary);
+	int x;
+	while (f.read((char*)&x, sizeof(x)))
+		cout << x << endl;
+	cout << endl;
+}
+
+void Process(const char* fName, const char* gName, const char* hName) // перезапис з файлу в інші файли парні та непарні числа відповідно
+{
+
+	ifstream f(fName, ios::binary); // вихідний  файлу 
+	ofstream g(gName, ios::binary);//  файл з парними числами 
+	ofstream h(hName, ios::binary); //  файл з непарними числами 
+	int x;
+	while (f.read((char*)&x, sizeof(x)))
+		if (x % 2 == 0)
+			g.write((char*)&x, sizeof(x));
+		else
+			h.write((char*)&x, sizeof(x));
+}
+
+int main()
+{
+	Create("f.dat", 50);// створення файлу цілих чисел
+	Print("f.dat");
+	Process("f.dat", "g.dat", "h.dat"); // створення файлів парних та непарних цілих чисел
+	Print("g.dat");
+	Print("h.dat");
+	return 0;
+}
