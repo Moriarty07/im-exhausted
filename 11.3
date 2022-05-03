@@ -1,0 +1,179 @@
+#include <stdio.h> 
+#include <iostream> 
+#include <fstream> 
+#include <string>
+
+using namespace std;
+struct Student
+{
+	char name[64];
+	int kurs;
+	double ser_ostinka;
+};
+
+void enter_save(char* fname)
+{
+	ofstream f(fname, ios::binary);
+	if (!f)
+	{
+		cerr << "Error opening file '" << fname << "'" << endl;
+		return;
+	}
+	Student  student1;
+	char ch;
+	do
+	{
+		cout << endl;
+		cout << "name: "; cin.sync();
+		cin >> student1.name;
+		cout << "kurs: "; cin >> student1.kurs;
+		cout << "ser_ostinka: "; cin >> student1.ser_ostinka;
+		if (!f.write((char*)&student1, sizeof(Student)))
+		{
+			cerr << "Error writing file." << endl;
+		}
+		cout << "Continue? (Y/N) "; cin >> ch;
+	} while (ch == 'Y' || ch == 'y');
+}
+
+void fWrite(fstream& f, const int i, const Student x)
+{
+	f.seekp(i * (long)sizeof(char)); // встановили вказівник
+	f.write((char*)&x, sizeof(char)); // записали значення
+}
+
+Student fRead(fstream& f, const int i)
+{
+	Student x;
+	f.seekg(i * (long)sizeof(char)); // встановили вказівник
+	f.read((char*)&x, sizeof(char)); // прочитали значення
+	return x;
+}
+void fChange(fstream& f, const int i, const int j)
+{
+	Student x = fRead(f, i);
+	Student y = fRead(f, j);
+	fWrite(f, i, y);
+	fWrite(f, j, x);
+}
+
+void SortBIN1(char* fname) // сортування файлу – за допомогою
+{ // прямого доступу до файлу
+	fstream f(fname, ios::binary | ios::in | ios::out);
+	// обов'язково слід вказати режими
+	// ios::binary | ios::in | ios::out
+	// - бінарний файл, для якого
+	// одночасно доступні операції
+	// - зчитування та
+	// - запису
+	f.seekg(0, ios::end);
+	int size = f.tellg();
+	f.seekg(0, ios::beg);
+	for (int i0 = 1; i0 < size; i0++)
+		for (int i1 = 0; i1 < size - i0; i1++)
+		{
+			Student  a = fRead(f, i1);
+			Student  b = fRead(f, i1 + 1);
+			if ((a.ser_ostinka > b.ser_ostinka) || (a.ser_ostinka == b.ser_ostinka) && (a.kurs > b.kurs)
+				|| (a.ser_ostinka == b.ser_ostinka) && (a.kurs = b.kurs) && (a.name < b.name))
+				fChange(f, i1, i1 + 1);
+		}
+	f.seekp(0, ios::end);
+}
+
+void SortBIN2(char* fname, char* gname) // сортування файлу – за допомогою
+{ // послідовного доступу: зчитуємо
+// з одного файлу і записуємо в інший
+	ofstream g(gname, ios::binary); // відкрили файл для зчитування і запису
+
+	Student s, mins, z; // s – прочитаний з файлу f символ
+	// mins – символ, який вважається
+	// найменшим
+	// z - записаний у файл g символ
+
+	ifstream f(fname, ios::binary); // відкрили перший файл для зчитування
+	// тепер будемо читати файл з початку
+	// цикл початку пошуку мінімального із ще не записаних символів
+	while (f.read((char*)&s, sizeof(Student))) // поки можна зчитувати
+	{ // символи
+		mins = s; // вважаємо перший ще не записаний символ
+		// - мінімальним
+		 // знайшли ще не записаний символ
+		// - збільшили лічильник
+		break; // вийшли з циклу присвоєння змінній
+	} // mins початкового значення
+	// цикл пошуку мінімального із ще не записаних символів
+	while (f.read((char*)&s, sizeof(Student))) // поки можна зчитувати
+	{ // символи
+
+		if (((s.ser_ostinka > mins.ser_ostinka)) || ((s.ser_ostinka == mins.ser_ostinka) && (s.kurs > mins.kurs))
+			|| ((s.ser_ostinka == mins.ser_ostinka) && (s.kurs == mins.kurs) && (s.name < mins.name)))
+			mins = s;
+		z = mins;
+		g.write((char*)&z, sizeof(Student));// - вважаємо його мінімальним
+	// збільшили лічильник ще не записаних
+	} // символів
+
+	// мінімальний з них
+	f.close(); // закрили перший файл
+
+}
+
+int BinSearch(char* gname, const string name, const int kurs, const double ser_bal)
+{ // повертає індекс знайденого елемента або -1, якщо шуканий елемент відсутній 
+	int L = 0, m;
+	fstream f(gname, ios::binary | ios::in | ios::out);
+	// обов'язково слід вказати режими
+	// ios::binary | ios::in | ios::out
+	// - бінарний файл, для якого
+	// одночасно доступні операції
+	// - зчитування та
+	// - запису
+	f.seekg(0, ios::end);
+	int R = f.tellg();
+	R = R - 1;
+	f.seekg(0, ios::beg);
+	do {
+		m = (L + R) / 2;
+		Student  a = fRead(f, m);
+		if (a.name == name && a.kurs == kurs && a.ser_ostinka == ser_bal)
+			return m;
+		if (((a.ser_ostinka < ser_bal)
+			||
+			(a.ser_ostinka == ser_bal) &&
+			(a.kurs < kurs)) || ((a.ser_ostinka == ser_bal) &&
+				a.name < name))
+		{
+			L = m + 1;
+		}
+		else
+		{
+			R = m - 1;
+		}
+	} while (L <= R);
+	return -1;
+}
+
+
+
+
+int main()
+{
+	int n;
+	char fname1[64];
+	char fname2[64];
+	cout << "File name 1";
+	cin >> fname1;
+	cout << "File name 2";
+	cin >> fname2;
+	enter_save(fname1);
+	SortBIN1(fname1);
+
+	SortBIN2(fname1, fname2);
+	n = BinSearch(fname2, "Rak", 1, 4.5);
+	if (n == -1)
+		cout << "student no ";
+	else
+		cout << "student yes";
+	return 0;
+}
