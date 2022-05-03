@@ -1,0 +1,137 @@
+#include <stdio.h> 
+#include <iostream> 
+#include <fstream> 
+#include <string>
+
+using namespace std;
+struct  Route
+{
+    char punkt1[64];
+    char punkt2[64];
+    int nomer;
+};
+void enter_save(char* fname)
+{
+    ofstream f(fname, ios::binary);
+    if (!f)
+    {
+        cerr << "Error opening file '" << fname << "'" << endl;
+        return;
+    }
+    Route marshrut1;
+    char ch;
+    do
+    {
+        cout << endl;
+        cout << "punkt1: "; cin.sync();
+        cin >> marshrut1.punkt1;
+        cout << "punkt2: "; cin >> marshrut1.punkt2;
+        cout << "nomer: "; cin >> marshrut1.nomer;
+        if (!f.write((char*)&marshrut1, sizeof(Route)))
+        {
+            cerr << "Error writing file." << endl;
+        }
+        cout << "Continue? (Y/N) "; cin >> ch;
+    } 
+    while (ch == 'Y' || ch == 'y');
+}
+
+void load_print(char* fname)
+{
+    ifstream f(fname, ios::binary);
+    if (!f)
+    {
+        cerr << "Error opening file '" << fname << "'" << endl;
+        return;
+    }
+    Route marshrut1;
+
+    while (f.read((char*)&marshrut1, sizeof(Route)))
+    {
+        cout << endl;
+        cout << "punkt1: " << marshrut1.punkt1 << endl;
+        cout << "punkt2: " << marshrut1.punkt1 << endl;
+        cout << "nomer: " << marshrut1.nomer << endl;
+    }
+}
+
+void fWrite(fstream& f, const int i, const  Route x)
+{
+    f.seekp(i * (long)sizeof(char)); // встановили вказівник
+    f.write((char*)&x, sizeof(char)); // записали значення
+}
+
+Route fRead(fstream& f, const int i)
+{
+     Route x;
+    f.seekg(i * (long)sizeof(char)); // встановили вказівник
+    f.read((char*)&x, sizeof(char)); // прочитали значення
+    return x;
+}
+void fChange(fstream& f, const int i, const int j)
+{
+    Route x = fRead(f, i);
+    Route y = fRead(f, j);
+    fWrite(f, i, y);
+    fWrite(f, j, x);
+}
+
+void SortBIN(char* fname) // сортування файлу – за допомогою
+{ // прямого доступу до файлу
+    fstream f(fname, ios::binary | ios::in | ios::out);
+    // обов'язково слід вказати режими
+    // ios::binary | ios::in | ios::out
+    // - бінарний файл, для якого
+    // одночасно доступні операції
+    // - зчитування та
+    // - запису
+    f.seekg(0, ios::end);
+    int size = f.tellg();
+    f.seekg(0, ios::beg);
+    for (int i0 = 1; i0 < size; i0++)
+        for (int i1 = 0; i1 < size - i0; i1++)
+        {
+            Route  a = fRead(f, i1);
+            Route  b = fRead(f, i1 + 1);
+            if (a.nomer > b.nomer)
+                fChange(f, i1, i1 + 1);
+        }
+    f.seekp(0, ios::end);
+}
+
+int Nomer_marshrut(char* fname, const int nomer)
+{
+    ifstream f(fname, ios::binary);
+
+    Route marshrut1;
+    int k = 0;
+    while (f.read((char*)&marshrut1, sizeof(Route)))
+    {
+        if (marshrut1.nomer == nomer)
+            k++;
+    }
+    return k;
+}
+
+
+
+
+int main()
+{
+    int k;
+    char fname[64];
+    cout << "name file: "; cin >> fname;
+    enter_save(fname);
+    load_print(fname);
+    SortBIN(fname);
+    load_print(fname);
+    k = Nomer_marshrut(fname, 12);
+    if (k > 0)
+        cout << "nomer 12 yes";
+    else
+        cout << "nomer 12 no";
+
+    return 0;
+}
+
+    
