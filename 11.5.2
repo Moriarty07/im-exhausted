@@ -1,0 +1,101 @@
+#include<iostream>
+#include<fstream>
+#include<time.h>
+#include<stdio.h>
+#include<string>
+#include<sstream>
+
+using namespace std;
+struct Instytyt
+{
+	string name;
+	int pryjom;
+	struct facultet
+	{
+		string fname;
+		string spec;
+		float prohid;
+	}facultet1;
+};
+void Crete_masyv(Instytyt* p, const int N)
+{
+	for (int i = 0; i < N; i++)
+	{
+		cout << "name:"; cin >> p[i].name;
+		cout << "pryjom:"; cin >> p[i].pryjom;
+		cout << "facultet:"; cin >> p[i].facultet1.fname;
+		cout << "spec:"; cin >> p[i].facultet1.spec;
+		cout << "prohid:"; cin >> p[i].facultet1.prohid;
+	}
+}
+void Print_masyv(Instytyt* p, const int N)
+{
+	for (int i = 0; i < N; i++)
+	{
+		cout << p[i].name << endl;
+		cout << p[i].pryjom << endl;
+		cout << p[i].facultet1.fname<< endl;
+		cout << p[i].facultet1.spec << endl;
+		cout << p[i].facultet1.prohid<< endl;
+		cout << endl;
+	}
+}
+void Sort(Instytyt* p, const int N)
+{
+	Instytyt tmp;
+	for(int i0 = 0; i0 < N - 1;i0++)
+		for (int i1 = 0; i1 < N -i0- 1; i1++)
+			if ((p[i1].pryjom > p[i1 + 1].pryjom) && (p[i1].facultet1.prohid > p[i1 + 1].facultet1.prohid))
+			{
+				tmp = p[i1];
+				p[i1] = p[i1 + 1];
+				p[i1 + 1] = tmp;
+			}
+}
+int Isnye_VZN(Instytyt* p, const int N, const string vzn, double p_ball)
+{
+	int k = 0;
+	int kl = 0;
+	for (int i = 0; i < N; i++)
+
+	{
+		string str = p[i].name;
+		kl = str.compare(vzn);
+		if ((kl == 0) && (p[i].facultet1.prohid == p_ball))
+			k++;
+	}
+	return k;
+}
+void Spysok(Instytyt* p, const int N)
+{
+	
+	string spycok_spec = "";
+	
+	for (int i = 0; i < N; i++)
+	{
+	
+			spycok_spec = spycok_spec + " " + p[i].facultet1.spec + " ";
+	}
+	cout << " " << spycok_spec << endl;
+}
+
+
+	
+int main()
+{
+	int N;
+	int k;
+	cout << "N: "; cin >> N;
+	Instytyt* p = new Instytyt[N];
+	Instytyt x;
+	Crete_masyv(p, N);
+	Sort(p, N);
+	Print_masyv(p, N);
+	Spysok(p, N);
+	k = Isnye_VZN(p, N, "DDPU", 137);
+	if (k > 0)
+		cout << "YES";
+	else
+		cout << "NO";
+	return 0;
+}
