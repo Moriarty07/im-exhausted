@@ -1,0 +1,99 @@
+#include<iostream>
+#include<fstream>
+#include<time.h>
+#include<stdio.h>
+#include<string>
+using namespace std;
+struct Instytyt
+{
+	string name;
+	int pryjom;
+	struct facultet
+	{
+		string fname;
+		string spec;
+		float prohid;
+	}facultet1;
+};
+void Crete_file(const char*filename,Instytyt*p,const int N)
+{
+	for (int i = 0; i < N; i++)
+	{
+		cout << "name:"; cin >> p[i].name;
+		cout << "pryjom:"; cin >> p[i].pryjom;
+		cout << "facultet:"; cin >> p[i].facultet1.fname;
+		cout << "spec:"; cin >> p[i].facultet1.spec;
+		cout << "prohid:"; cin >> p[i].facultet1.prohid;
+	}
+	srand((unsigned)time(NULL));
+	ofstream f(filename, ios::binary);
+	for (int i = 0; i < N; i++)
+	{
+		f.write((char*)&p[i], sizeof(p[i]));
+	}
+}
+void Print(const char* filename)
+{
+	ifstream f(filename, ios::binary);
+	Instytyt x;
+	while (f.read((char*)&x,sizeof(x)))
+	{
+		cout << x.name << endl;
+		cout << x.pryjom<< endl;
+		cout << x.facultet1.fname<<endl;
+		cout << x.facultet1.spec<<endl;
+		cout << x.facultet1.prohid<<endl;
+		cout << endl;
+	}
+	cout << endl;
+}
+void Remove(char* filename, const int kill_pr, char* new_filename)
+{
+	ifstream f(filename, ios::binary);
+	ofstream t(new_filename, ios::binary);
+	Instytyt x;
+	while (f.read((char*)&x, sizeof(x)))
+		if (x.pryjom > kill_pr)
+			t.write((char*)&x, sizeof(x));
+	f.close();
+	t.close();
+	//remove(filename);
+	// rename("TMP.DAT", filename);
+}
+void fZapys(char* fName, const int k_nomer, const Instytyt x)
+{
+	ofstream f(fName, ios::binary);
+	f.seekp(k_nomer * (long)sizeof(x));
+	f.write((char*)&x, sizeof(Instytyt));
+	f.close();
+}
+void fdoZapys(char* fName, const Instytyt x)
+{
+	ofstream f(fName, ios::binary + ios::app);
+	f.write((char*)&x, sizeof(Instytyt));
+	f.close();
+}
+int main()
+{
+	int N;
+	char filename[16];
+	cout << "Enter file name:";
+	cin.getline(filename, sizeof(filename));
+	char new_filename[16];
+	cout << "Enter new file name :";
+	cin.getline(new_filename, sizeof(new_filename));
+	cout << "N:"; cin >> N;
+	Instytyt* p = new Instytyt[N];
+	Instytyt x;
+	Crete_file(filename, p, N);
+	Print(filename);
+	x.name = "DDPU";
+	x.pryjom = 145;
+	x.facultet1.fname = "NNIMFIT";
+	x.facultet1.prohid = 128;
+	x.facultet1.spec = "FI";
+	fZapys(filename, 1, x);
+	fdoZapys(filename, x);
+//	Remove(filename, 150, new_filename);
+	return 0;
+}
