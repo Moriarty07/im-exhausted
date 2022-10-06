@@ -1,198 +1,94 @@
- Файл Bill.h;
-#pragma once
-class Bill
-{
-public:
-     	Bill(void);
-     	~Bill(void);
-     	 
-public:
-     	double first;
-	double second;
-     	void Display() const;
-	void Read();
-	
-	
-};
- 
-Файл Bill.cpp;
-#include "StdAfx.h"
-#include "Bill.h"
-#include <iostream>
-using namespace std;
- 
- 
-Bill::Bill(void)
-{
-}
- 
- 
-Bill::~Bill(void)
-{
-}
- 
- 
- 
-void Bill::Read()
-{
-     	double x;
-     	double y;
-     	cout << "first = ";
-     	cin >> x;
-     	cout << "second = ";
-     	cin >> y;
-     	first=x;
-     	second=y;
- 
-}
-void Bill::Display() const
-{
-     	cout << "first = " << first << " second = " << second << endl;
-}
- 
- 
- 
-Опис класу Complex
- 
-Файл Complex.h;
- 
-#pragma once
-class Complex
-{
-public:
-     	Complex(void);
-     	~Complex(void);
-     	
-public:
-     	 double x;
-	double y;
-public:
-     	double getX() const;
-     	double getY() const;
-	void setComplex(double value1,double value2);
-   Complex Add(Complex l, Complex r);
-   Complex Multy(Complex l, Complex r);
-   bool Egual(Complex l, Complex r);
-  
-};
- 
- 
- 
- 
-Методи класу Complex
- 
-// з файлу  Complex.cpp;
- 
-"
- 
- 
-#include "StdAfx.h"
-#include "Complex.h"
- 
- 
-Complex::Complex(void)
-{
-}
- 
- 
-Complex::~Complex(void)
-{
-};
- 
- 
- 
- double Complex::getX() const
-{
-return x;
-};
- 
-double Complex:: getY() const
-{
-return y;
-};
- 
-void Complex::setComplex(double value1,double value2)
-{
-x = value1;
-y=value2;
-};
- 
- 
-Complex Complex::Add(Complex l, Complex r)
-// функція додавання двох комплексних чисел
-{
-     	Complex t;
-t.x = l.x + r.x;
-t.y = l.y + r.y;
-return t;
-};
- 
-Complex Complex::Multy(Complex l, Complex r)
-{
-     	// функція множення двох комплексних чисел
-     	Complex t;
-t.x = l.x *r.x-l.y*r.y;
-t.y = l.x*r.y+l.y*r.x;
-return t;
-};
-bool Complex::Egual(Complex l, Complex r)
-{
-     	// функція порівняння двох комплексних чисел
-     	bool f;
-     	if ((l.x==r.x) && (l.y==r.y))
-               	f=true;
-     	else
-               	f=false;
-     	return f;
-};
- 
- 
- 
- 
-Основна програма
- 
-#include "Bill.h"
-#include "Complex.h"
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<string>
 #include<string.h>
 
 
+class Complex
+{
+	double x;
+	double y;
+public:
+	double getX() const
+	{
+		return x;
+	}
+	double getY() const
+	{
+		return y;
+	}
+	void setComplex(double value1, double value2)
+	{
+		x = value1;
+		y = value2;
+	}
+	Complex Add(Complex l, Complex r);
+	Complex Multy(Complex l, Complex r);
+	bool Egual(Complex l, Complex r);
+};
 
-using namespace std;
+Complex Complex::Add(Complex l, Complex r)
+{
+	Complex t;
+	t.x = l.x + r.x;
+	t.y = l.y + r.y;
+	return t;
+}
+
+Complex Complex::Multy(Complex l, Complex r)
+{
+	Complex t;
+	t.x = l.x * r.x - l.y * r.y;
+	t.y = l.x * r.y + l.y * r.x;
+	return t;
+}
+bool Complex::Egual(Complex l, Complex r)
+{
+	bool f;
+	if ((l.x == r.x) && (l.y == r.y))
+		f = true;
+	else
+		f = false;
+	return f;
+}
+
 
 
 int main(int argc, char* argv[])
 {
+	setlocale(LC_ALL, "ukr");
 
-	Bill B, B1;
-	B.Read();
-	B.Display();
-	B1.Read();
-	B1.Display();
-	Complex a, b, c, c1, d;
-	a.setComplex(B.first, B.second);
-	b.setComplex(B1.first, B1.second);
-	// додавання двох комплексних чисел
-	c = d.Add(a, b);
-	cout << "suma=" << endl;
-	cout << "x=";
-	cout << c.getX() << endl;
-	cout << "y=";
-	cout << c.getY() << endl;
-	// множення двох комплексних чисел
-	c1 = d.Multy(a, b);
-	cout << "dobytok=" << endl;
-	cout << "x=";
-	cout << c1.getX() << endl;
-	cout << "y=";
-	cout << c1.getY() << endl;
-	bool f;
-	f = d.Egual(c, c1);
-	if (f)
-		cout << "complex equal" << endl;
-	else
-		cout << "No complex equa" <<endl;
-	system("PAUSE");
-	return 0;
+	{
+
+		double x, y;
+		double x1, y1;
+		bool f;
+		std::cout << "x = ";
+		std::cin >> x;
+		std::cout << "y = ";
+		std::cin >> y;
+		Complex a, b, c, c1, d;
+		a.setComplex(x, y);
+		std::cout << "x1 = ";
+		std::cin >> x1;
+		std::cout << "y1 = ";
+		std::cin >> y1;
+		b.setComplex(x1, y1);
+		c = d.Add(a, b);
+		std::cout << "дийсна частина суми=";
+		std::cout << c.getX() << std::endl;
+		std::cout << "уявна частина суми=";
+		std::cout << c.getY() << std::endl;
+		c1 = d.Multy(a, b);
+		std::cout << "дийсна частина добутку=";
+		std::cout << c1.getX() << std::endl;
+		std::cout << "уявна частина добутку=";
+		std::cout << c1.getY() << std::endl;
+		f = d.Egual(c, c1);
+		if (f)
+			std::cout << "комплексни числа ривни";
+		else
+			std::cout << "комплексни числа не ривни";
+
+		return 0;
+	}
 }
