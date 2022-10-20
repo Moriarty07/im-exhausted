@@ -1,0 +1,170 @@
+#include "Angle.h"
+#include <sstream> 
+#include "Math.h"
+
+Angle::Angle()
+{
+    grades = 0;
+    minutes = 0;
+}
+Angle::Angle(int g, int m)
+{
+    grades = g;
+    minutes = m;
+}
+Angle::Angle(const Angle& r)
+{
+    grades = r.grades;
+    minutes = r.minutes;
+}
+Angle::~Angle()
+{
+}
+void Angle::Setgrades(int r)
+{
+    grades = r;
+}
+void Angle::Setminutes(int i)
+{
+    minutes = i;
+}
+int Angle::Getgrades() const
+{
+    return grades;
+}
+int Angle::Getminutes() const
+{
+    return minutes;
+}
+Angle Angle::ZminaB(Angle gr0, int gz, int mz)
+{
+    // функція збільшення значення кута
+    Angle gr;
+    gr.grades = gr0.grades + gz;
+    gr.minutes = gr0.minutes + mz;
+    return gr;
+}
+
+Angle Angle::ZminaM(Angle gr0, int gz, int mz)
+{
+    // функція зменшення значення кута
+
+    Angle gr;
+    gr.grades = gr0.grades - gz;
+    gr.minutes = gr0.minutes - mz;
+    return gr;
+}
+
+double Angle::Gradusy()
+{
+    // функція перетворення кута в градуси
+
+    double grad;
+    grad = grades + minutes * (1.0 / 360);
+    return grad;
+}
+
+double Angle::Radian(double gr)
+{
+    // функція перетворення кута в радіани
+    double rad2;
+    double pi = 3.14159;
+    rad2 = pi / 180 * gr;
+    return rad2;
+}
+double  Angle::Fsin(double rad)
+{
+    // функція обчислення синуса
+
+    double rez;
+    rez = sin(rad);
+    return rez;
+}
+// Angle.h
+// заголовний файл – визначення класу 
+#pragma once
+#include <iostream> 
+#include <string>
+using namespace std;
+class Angle
+{
+    int grades, minutes;
+public:
+    Angle();
+    Angle(int, int);
+    Angle(const Angle&);
+    ~Angle();
+    void Setgrades(int);
+    void Setminutes(int);
+    int Getgrades() const;
+    int Getminutes() const;
+
+    static Angle ZminaB(Angle, int, int);
+    static Angle ZminaM(Angle, int, int);
+    double Radian(double);
+    double Gradusy();
+    double Fsin(double);
+};
+
+#include <iostream>
+#include "Angle.h" 
+using namespace std;
+
+int main()
+{
+	int x, y;
+	cout << "Enter grades: " << endl;
+	cin >> x;
+	cout << "Enter minutes: " << endl;
+	cin >> y;
+
+	Angle kut1, kut(x, y);
+	double grad, radian, rez;
+	int gz, mz;
+	cout << "//1" << endl;
+	//1
+	kut1.Setgrades(x);
+	kut1.Setminutes(y);
+	grad = kut1.Gradusy();
+	cout << " kut v gradusah: "; cout << grad << endl;
+	radian = kut1.Radian(grad);
+	cout << " kut v radianah: "; cout << radian << endl;
+	rez = kut1.Fsin(radian);
+	cout << " kut v sinusah: "; cout << rez << endl;
+
+	cout << "Vvedit dodanok gradusiv: " << endl;
+	cin >> gz;
+	cout << "Vvedit dodanok minut: " << endl;
+	cin >> mz;
+
+	grad = Angle::ZminaB(kut1, gz, mz).Gradusy();
+	cout << " kut v gradusah: "; cout << grad << endl;
+
+	cout << "Vvedit vidyemnyk gradusiv: " << endl;
+	cin >> gz;
+	cout << "Vvedit vidyemnyk minut: " << endl;
+	cin >> mz;
+
+	grad = Angle::ZminaM(kut1, gz, mz).Gradusy();
+	cout << " kut v gradusah: "; cout << grad << endl;
+
+	//2
+	cout << "//2" << endl;
+	grad = kut.Gradusy();
+	cout << " kut v gradusah: "; cout << grad << endl;
+	radian = kut.Radian(grad);
+	cout << " kut v radianah: "; cout << radian << endl;
+	rez = kut.Fsin(radian);
+	cout << " kut v sinusah: "; cout << rez << endl;
+
+	//3
+	Angle kut2(kut1);
+	cout << "//3" << endl;
+	grad = kut2.Gradusy();
+	cout << " kut v gradusah: "; cout << grad << endl;
+	radian = kut2.Radian(grad);
+	cout << " kut v radianah: "; cout << radian << endl;
+	rez = kut2.Fsin(radian);
+	cout << " kut v sinusah: "; cout << rez << endl;
+	return 0;
+}
