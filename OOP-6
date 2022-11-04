@@ -1,0 +1,249 @@
+#pragma once
+#include<iostream>
+#include<string>
+using namespace std;
+class Matrix
+{
+private:
+	int** data;
+	int N;
+public:
+	Matrix();
+	Matrix(int N);
+	Matrix(int** _data, int _N);
+	Matrix(Matrix& matrix);
+	~Matrix();
+	int getRows();
+	int getCols();
+	int normaMatrici();
+	int* operator[] (int i);
+	Matrix& operator =(Matrix& matrix);
+	friend Matrix& operator + (Matrix& matrix1, Matrix& matrix2);
+	friend bool operator ==(Matrix& matrix1, Matrix& matrix2);
+	friend ostream& operator << (ostream& out, Matrix& matrix);
+	friend istream& operator >> (istream& in, Matrix& matrix);
+	operator string();
+
+
+
+};
+#include "Matrix.h"
+#include <sstream>
+#include <algorithm>
+
+Matrix::Matrix()
+{
+	data = new int* [5];
+	N = 5;
+	for (int i = 0; i < N; i++)
+	{
+		data[i] = new int[N];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			data[i][j] = 0;
+		}
+	}
+}
+
+Matrix::Matrix(int _N) {
+	data = new int* [_N];
+	N = _N;
+	for (int i = 0; i < N; i++)
+	{
+		data[i] = new int[N];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			data[i][j] = 0;
+		}
+	}
+}
+
+Matrix::Matrix(int** _data, int _N)
+{
+	data = _data;
+	N = _N;
+}
+
+Matrix::Matrix(Matrix& matrix)
+{
+	N = matrix.getRows();
+	data = new int* [N];
+	for (int i = 0; i < N; i++)
+	{
+		data[i] = new int[N];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			data[i][j] = matrix.data[i][j];
+		}
+	}
+}
+
+int Matrix::getRows()
+{
+	return N;
+}
+
+int Matrix::getCols()
+{
+	return N;
+}
+
+int Matrix::normaMatrici()
+{
+	int max = data[0][0], min = data[0][0];
+	double result = 0;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			if (max < data[i][j]) 
+			{
+				max = data[i][j];
+			}
+			if (min > data[i][j])
+			{
+				min = data[i][j];
+			}
+		}
+	}
+	return abs(max-min);
+}
+
+int* Matrix::operator[](int row)
+{
+	return data[row];
+}
+
+Matrix& Matrix::operator=(Matrix& m)
+{
+	for (int i = 0; i < N; i++)
+	{
+		delete[] data[i];
+	}
+	delete[] data;
+	N = m.getRows();
+	data = new int* [N];
+	for (int i = 0; i < N; i++)
+	{
+		data[i] = new int[N];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			data[i][j] = m.data[i][j];
+		}
+	}
+	return *this;
+}
+
+
+
+Matrix::operator string()
+{
+
+	stringstream stream;
+
+	for (int i = 0; i < this->N; i++) {
+		for (int j = 0; j < this->N; j++) {
+			stream << this->data[i][j] << '  ';
+		}
+		stream << '\n';
+	}
+	return stream.str();
+
+
+}
+
+Matrix::~Matrix()
+{
+	for (int i = 0; i < N; i++)
+	{
+		delete[] data[i];
+	}
+	delete[] data;
+}
+
+Matrix& operator+(Matrix& matrix1, Matrix& matrix2)
+{
+	Matrix* a = new Matrix(matrix1.N);
+	for (int i = 0; i < matrix1.N; i++)
+	{
+		for (int j = 0; j < matrix1.N; j++)
+		{
+			a->data[i][j] = matrix1.data[i][j] + matrix2.data[i][j];
+		}
+
+	}
+	return *a;
+
+}
+
+bool operator==(Matrix& matrix1, Matrix& matrix2)
+{
+	if (matrix1.N != matrix2.N) return false;
+	for (int i = 0; i < matrix1.N; i++)
+	{
+		for (int j = 0; j < matrix1.N; j++)
+		{
+			if (matrix1.data[i][j] != matrix2.data[i][j]) return false;
+		}
+	}
+	return true;
+}
+
+ostream& operator<<(ostream& out, Matrix& matrix)
+{
+	for (int i = 0; i < matrix.N; i++)
+	{
+		for (int j = 0; j < matrix.N; j++) {
+			out << matrix.data[i][j] << "  ";
+		}
+		out << endl;
+	}
+	return out;
+}
+
+istream& operator>>(istream& in, Matrix& matrix)
+{
+	for (int i = 0; i < matrix.N; i++)
+	{
+		for (int j = 0; j < matrix.N; j++) {
+			cout << "vvedit data[" << i << "][" << j << "]: "; in >> matrix.data[i][j];
+		}
+	}
+	return in;
+
+}
+#include <iostream>
+#include"Matrix.h"
+int main()
+{
+    Matrix matrica(3);
+    cin >> matrica;
+    cout << matrica;
+    Matrix matrica2(3);
+    cin >> matrica2;
+    Matrix suma = matrica + matrica2;
+    cout << "suma" << endl;
+    cout << suma << endl;
+    bool rivni = matrica == matrica2;
+    if (rivni) 
+    {
+        cout << "rivni" << endl;
+    }
+    else
+    {
+        cout << "ne rivni" << endl;
+    }
+    cout << "norma  " << matrica.normaMatrici() << endl;
+}
