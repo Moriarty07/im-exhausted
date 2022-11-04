@@ -1,0 +1,190 @@
+#include "Liquid.h"
+#include <sstream>
+Liquid::Liquid()
+{
+	name = "";
+	gystuna = 0;
+}
+
+Liquid::Liquid(string _name, double _gystuna)
+{
+	name = _name;
+	gystuna = _gystuna;
+}
+
+Liquid::Liquid(Liquid& l)
+{
+	name = l.name;
+	gystuna = l.gystuna;
+}
+
+string Liquid::getName()
+{
+	return name;
+}
+
+double Liquid::getGystuna()
+{
+	return gystuna;
+}
+
+void Liquid::setGystuna(double _gystuna)
+{
+	gystuna = _gystuna;
+}
+
+Liquid& Liquid::operator=(Liquid& l)
+{
+	name = l.name;
+	gystuna = l.gystuna;
+	return *this;
+}
+
+Liquid::operator string()
+{
+	stringstream stream;
+
+	stream << "name: " << name << "  gystuna: " << gystuna << endl;
+	return stream.str();
+
+}
+
+ostream& operator<<(ostream& out, const Liquid& l)
+{
+	out << string("name: " + l.name + "  gystuna: " + to_string(l.gystuna));
+	return out;
+
+}
+
+istream& operator>>(istream& in, Liquid& l)
+{
+	cout << "name: "; in >> l.name;
+	cout << "gystuna: "; in >> l.gystuna;
+	return in;
+}
+#include "Solution.h"
+#include <sstream>
+
+Solution::Solution()
+{
+	Liquid a;
+	liquid = a;
+	vidnosna_kilkist_rechoviny = 0;
+}
+
+Solution::Solution(string _name, double _gystuna, double _vidnosna_kilkist_rechoviny)
+{
+	Liquid a(_name, _gystuna);
+	liquid = a;
+	vidnosna_kilkist_rechoviny = _vidnosna_kilkist_rechoviny;
+}
+
+Solution::Solution(Solution& s)
+{
+	liquid = s.liquid;
+	vidnosna_kilkist_rechoviny = s.vidnosna_kilkist_rechoviny;
+}
+
+Liquid Solution::getLiquid()
+{
+	return liquid;
+}
+
+double Solution::getVidnosna_kilkist_rechoviny()
+{
+	return vidnosna_kilkist_rechoviny;
+}
+
+void Solution::setVidnosna_kilkist_rechoviny(double _vidnosna_kilkist_rechoviny)
+{
+	vidnosna_kilkist_rechoviny = _vidnosna_kilkist_rechoviny;
+}
+
+Solution& Solution::operator=(Solution& s)
+{
+	liquid = s.liquid;
+	vidnosna_kilkist_rechoviny = s.vidnosna_kilkist_rechoviny;
+	return *this;
+}
+
+Solution::operator string()
+{
+	stringstream stream;
+
+	stream << "name: " << liquid.getName() << "  gystuna: " << liquid.getGystuna()
+		<< "  vidnosna_kilkist_rechoviny: " << vidnosna_kilkist_rechoviny << endl;
+	return stream.str();
+}
+
+ostream& operator<<(ostream& out, const Solution& s)
+{
+	out << s.liquid << "  vidnosna_kilkist_rechoviny: " << s.vidnosna_kilkist_rechoviny << "\n";
+	return out;
+}
+
+istream& operator>>(istream& in, Solution& s)
+{
+	in >> s.liquid;
+	cout << "vidnosna_kilkist_rechoviny = "; in >> s.vidnosna_kilkist_rechoviny;
+	return in;
+}
+#pragma once
+#include<iostream>
+#include <string>
+using namespace std;
+class Liquid
+{
+private:
+	string name;
+	double gystuna;
+public:
+	Liquid();
+	Liquid(string _name, double _gystuna);
+	Liquid(Liquid& l);
+	string getName();
+	double getGystuna();
+	void setGystuna(double _gystuna);
+	Liquid& operator = (Liquid& l);
+	operator string();
+	friend ostream& operator << (ostream& out, const Liquid& l);
+	friend istream& operator >> (istream& in, Liquid& l);
+};
+#pragma once
+#include "Liquid.h"
+class Solution
+{
+private:
+	Liquid liquid;
+	double vidnosna_kilkist_rechoviny;
+public:
+	Solution();
+	Solution(string _name, double _gystuna, double _vidnosna_kilkist_rechoviny);
+	Solution(Solution& s);
+	Liquid getLiquid();
+	double getVidnosna_kilkist_rechoviny();
+	void setVidnosna_kilkist_rechoviny(double _vidnosna_kilkist_rechoviny);
+	Solution& operator = (Solution& s);
+	operator string();
+	friend ostream& operator << (ostream& out, const Solution& s);
+	friend istream& operator >> (istream& in, Solution& s);
+};
+
+#include <iostream>
+#include"Solution.h"
+int main()
+{
+    Solution solution("something", 785, 0.25);
+    Solution solution2;
+    cout << solution << endl;
+    cin >> solution2;
+    cout << (string)solution2 << endl;
+    Solution solution3;
+    solution3 = solution2;
+    solution.setVidnosna_kilkist_rechoviny(0.67);
+    cout << solution.getVidnosna_kilkist_rechoviny() << endl;
+    Liquid liquid("some", 1225);
+    cout << liquid << endl;
+    cin >> liquid;
+    cout << (string)liquid << endl;
+
+}
