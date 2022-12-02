@@ -1,0 +1,144 @@
+#pragma once
+#include<iostream>
+using namespace std;
+class Number
+{
+protected:
+	float value;
+public:
+	Number();
+	Number(float);
+	void setValue(float);
+	float getValue();
+
+	Number add(Number);
+	Number divide(Number number);
+
+	operator string();
+	friend ostream& operator << (ostream&, Number&);
+	friend istream& operator >> (istream&, Number&);
+};
+
+#include<iostream>
+#include<string>
+#include "Number.h"
+using namespace std;
+
+Number::Number() {
+	value = 0;
+}
+Number::Number(float value) {
+	this->value = value;
+}
+void Number::setValue(float value) {
+	this->value = value;
+}
+float Number::getValue() {
+	return value;
+}
+Number Number::add(Number number) {
+	Number res(this->value + number.value);
+	return res;
+}
+Number Number::divide(Number number) {
+	if (number.value == 0) {
+		cout << " incorrect value: can not divide by 0";
+	}
+	Number res(this->value / number.value);
+	return res;
+}
+Number::operator string() {
+	return to_string(value);
+}
+ostream& operator<<(ostream& out, Number& number) {
+	out << number.value << endl;
+	return out;
+}
+istream& operator>>(istream& in, Number& number) {
+	cout << "Input value: "; in >> number.value;
+	return in;
+}
+#pragma once
+#include<iostream>
+#include<string>
+#include "Number.h"
+using namespace std;
+class Real : public Number
+{
+public:
+	Real();
+	Real(float);
+
+	/*operator string();*/
+	friend ostream& operator << (ostream&, Real&);
+	friend istream& operator >> (istream&, Real&);
+	Real exponentiation(int);
+	Real log();
+};
+
+#include "Real.h"
+#include<cmath>
+
+Real::Real()
+{
+	this->value = 0;
+}
+
+Real::Real(float value) {
+	this->value=value;
+}
+
+//Real::operator string()
+//{
+//	return to_string(this->value);
+//}
+
+Real Real::exponentiation(int power)
+{
+	return pow(value, power);
+}
+
+Real Real::log()
+{
+	return logf(value);
+}
+
+ostream& operator<<(ostream& out, Real& real)
+{
+	out << real.value << endl;
+	return out;
+}
+
+istream& operator>>(istream& in, Real& real)
+{
+	cout << "Input value: "; in >> real.value;
+	return in;
+}
+#include <iostream>
+#include"Number.h";
+#include"Real.h";
+using namespace std;
+
+void test(Number n) {
+    cout << n << endl;
+}
+
+int main()
+{
+    Number a(12);
+    cout << a << endl;
+    Real r(2);
+    cin >> a;
+    cout << (string)r << endl;
+    cout << r << endl;
+    Number c = a.add(r);
+    cout << c << endl;
+    c = r.divide(a);
+    cout << c << endl;
+    c = r.exponentiation(3);
+    cout << c << endl;
+    c = r.log();
+    cout << c << endl;
+    test(a);
+    test(r);
+}
