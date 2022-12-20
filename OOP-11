@@ -1,0 +1,137 @@
+#include <iostream>
+#include"Shape.h"
+#include"Cub.h"
+#include"Cylinder.h"
+#include"Ball.h"
+using namespace std;
+
+int main()
+{
+	Shape* arr[4];
+	arr[0] = new Cub(2);
+	arr[1] = new Cylinder(2, 3, 4);
+	arr[2] = new Ball(1);
+	for (int i = 0; i < 4; i++)
+	{
+		cout << "V = " << arr[i]->volume() << endl;
+		cout << endl;
+	}
+
+}
+
+
+
+#pragma once
+class Shape abstract
+{
+public:
+	virtual double volume() abstract;
+};
+
+#pragma once
+#include"Shape.h"
+class Cub : public Shape
+{
+private:
+	double x, y, z;
+public:
+	Cub();
+	Cub(double x, double y, double z);
+	double volume() override;
+};
+
+
+#include "Cub.h"
+
+Cub::Cub()
+{
+	this->x = 1;
+	this->y = 1;
+	this->z = 1;
+}
+
+Cub::Cub(double x)
+{
+	this->x = 1;
+}
+
+Cub::Cub(double x)
+{
+	this->x = x;
+}
+
+double Cub::volume()
+{
+	
+	return 6 * x * x;
+}
+
+#pragma once
+#include"Shape.h"
+class Cylinder : public Shape
+{
+private:
+	double x, y, h;
+public:
+	Cylinder();
+	Cylinder(double x, double y, double h);
+	double volume() override;
+};
+
+
+#include "Cylinder.h"
+
+Cylinder::Cylinder()
+{
+	this->x = 1;
+	this->y = 1;
+	this->h = 1;
+}
+
+Cylinder::Cylinder(double x, double y, double h)
+{
+	this->x = x;
+	this->y = y;
+	this->h = h;
+}
+
+double Cylinder::volume()
+{
+	return x * y * h / 3;
+}
+
+
+
+
+#pragma once
+#include<cmath>
+#include"Shape.h"
+class Ball : public Shape
+{
+private:
+	double r;
+public:
+	Ball();
+	Ball(double r);
+	double volume() override;
+};
+
+
+#include<iostream>
+#include "Ball.h"
+using namespace std;
+Ball::Ball()
+{
+	this->r = 1;
+}
+
+Ball::Ball(double r)
+{
+	this->r = r;
+}
+
+double Ball::volume()
+{
+	const double PI = acos(-1.0);
+	return 4 / 3 * PI * pow(r, 3);
+}
