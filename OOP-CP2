@@ -1,0 +1,127 @@
+#include <iostream>
+using namespace std;
+
+class Dot {
+private:
+  int x;
+  int y;
+public:
+  Dot()
+  {
+    x = 0;
+    y = 0;
+  }
+
+  Dot(int x,int y)
+  {
+    this->x = x;
+    this->y = y;
+  }
+
+  int getX()
+  {
+    return x;
+  }
+
+  int getY()
+  {
+    return y;
+  }
+};
+
+class Ellips {
+private:
+  Dot center;
+  int bigR;
+  int smallR;
+public:
+  Ellips(Dot center,int b,int s)
+  {
+    this->center = center;
+    this->bigR = b;
+    this->smallR = s;
+  }
+  float getSquare()
+  {
+    return 3.14 * bigR * smallR;
+  }
+  
+  int getX()
+  {
+    return center.getX();
+  }
+  
+  int getY()
+  {
+    return center.getY();
+  }
+
+  int getBigRadius()
+  {
+    return bigR;
+  }
+
+  int getSmallRadius()
+  {
+    return smallR;
+  }
+};
+
+class Circle {
+private:
+  Dot center;
+  int R;
+public:
+  Circle(Dot center,int r)
+  {
+    this->center = center;
+    this->R = r;
+  }
+
+  float getSquare()
+  {
+    return 3.14 * R * R;
+  }
+
+  int getRadius()
+  {
+    return R;
+  }
+
+  int getX()
+  {
+    return center.getX();
+  }
+
+  int getY()
+  {
+    return center.getY();
+  }
+};
+
+int main()
+{
+  Dot center1(10, 10);
+  Dot center2(5, 5);
+
+  Ellips el(center1, 10, 5);
+  Circle cr(center2, 10);
+
+
+  cout << "ellipse center: " << el.getX() << ";" << el.getY() << endl;
+  cout << "ellipse big R: " << el.getBigRadius() << endl;
+  cout << "ellipse small R: " << el.getSmallRadius() << endl;
+  cout << "ellipse square: " << el.getSquare() << endl;
+  cout << "-----------------------------" << endl;
+  
+  cout << "circle center: " << cr.getX() << ";" << cr.getY() << endl;
+  cout << "circle square: " << cr.getSquare() << endl;
+  cout << "circle Radius: " << cr.getRadius() << endl;
+
+
+
+
+
+
+
+}
