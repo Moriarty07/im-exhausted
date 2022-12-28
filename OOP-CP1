@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+private:
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+public:
+  Rectangle(int x1,int y1, int x2, int y2)
+  {
+    this->x1 = x1;
+    this->x2 = x2;
+    this->y1 = y1;
+    this->y2 = y2;
+  }
+
+  void setX1(int newX1)
+  {
+    x1 = newX1;
+  }
+  void setX2(int newX2)
+  {
+    x2 = newX2;
+  }
+  void setY1(int newY1)
+  {
+    y1 = newY1;
+  }
+  void setY2(int newY2)
+  {
+    y2 = newY2;
+  }
+
+  int getX1()
+  {
+    return x1;
+  }
+  int getX2()
+  {
+    return x2;
+  }
+  int getY1()
+  {
+    return y1;
+  }
+  int getY2()
+  {
+    return y2;
+  }
+
+  float getDiagonal()
+  {
+    return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+  }
+
+  int getFirstSide()
+  {
+    return abs(y1 - y2);
+  }
+
+  int getSecondSide()
+  {
+    return abs(x1 - x2);
+  }
+
+  int getPerimetr()
+  {
+    return (getFirstSide() + getSecondSide()) * 2;
+  }
+};
+int main()
+{
+  Rectangle rect(1, 1, 10, 10);
+
+  cout << "diagonal: "<< rect.getDiagonal() << endl;
+  cout << "first side: " << rect.getFirstSide() << endl;
+  cout << "second side: " << rect.getSecondSide() << endl;
+  cout << "perimeter: " << rect.getPerimetr() << endl;
+  cout << "------------------" << endl;
+
+  rect.setX1(0);
+  rect.setY1(0);
+
+  cout << "diagonal: " << rect.getDiagonal() << endl;
+  cout << "first side: " << rect.getFirstSide() << endl;
+  cout << "second side: " << rect.getSecondSide() << endl;
+  cout << "perimeter: " << rect.getPerimetr() << endl;
+
+}
