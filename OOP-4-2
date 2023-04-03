@@ -1,0 +1,93 @@
+class Program
+{
+    static void Main(string[] args)
+    {
+        Rectangle rectangle = new Rectangle();
+
+        Console.Write("Enter height: ");
+        double height = double.Parse(Console.ReadLine());
+        rectangle.Height = height;
+
+        Console.Write("Enter width: ");
+        double width = double.Parse(Console.ReadLine());
+        rectangle.Width = width;
+
+        rectangle.Display();
+    }
+}
+class Rectangle
+{
+   
+    
+    private double height;
+    private double width;
+
+    public double Height
+    {
+        get { return height; }
+        set
+        {
+            if (value > 0)
+                height = value;
+            else
+                Console.WriteLine("Height must be greater than zero.");
+        }
+    }
+
+    public double Width
+    {
+        get { return width; }
+        set
+        {
+            if (value > 0)
+                width = value;
+            else
+                Console.WriteLine("Width must be greater than zero.");
+        }
+    }
+
+    public double Area()
+    {
+        return height * width;
+    }
+
+    public double Perimeter()
+    {
+        return 2 * (height + width);
+    }
+
+    public void SetHeight(double h)
+    {
+        if (h > 0)
+            height = h;
+        else
+            Console.WriteLine("Height must be greater than zero.");
+    }
+
+    public void SetWidth(double w)
+    {
+        if (w > 0)
+            width = w;
+        else
+            Console.WriteLine("Width must be greater than zero.");
+    }
+
+    public double GetHeight()
+    {
+        return height;
+    }
+
+    public double GetWidth()
+    {
+        return width;
+    }
+
+    public void Display()
+    {
+        Console.WriteLine("Height: {0}", height);
+        Console.WriteLine("Width: {0}", width);
+        Console.WriteLine("Area: {0}", Area());
+        Console.WriteLine("Perimeter: {0}", Perimeter());
+    }
+}
+
