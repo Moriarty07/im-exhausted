@@ -1,0 +1,68 @@
+using System;
+
+class Program
+{
+    static bool CheckForDoubleExclamationMarks(string str)
+    {
+        return str.Contains("!!");
+    }
+
+    static string ReplaceDoubleExclamationMarks(string str)
+    {
+        return str.Replace("!!", "**");
+    }
+
+    static void Main()
+    {
+        Console.Write("Введіть перший рядок: ");
+        string str1 = Console.ReadLine();
+
+        if (CheckForDoubleExclamationMarks(str1))
+        {
+            Console.WriteLine("Знайдено групу з двох знаків оклику \"!!\".");
+        }
+        else
+        {
+            Console.WriteLine("Група з двох знаків оклику не знайдена.");
+        }
+
+        string str2 = ReplaceDoubleExclamationMarks(str1);
+        Console.WriteLine($"Результат заміни двійок сусідніх знаків оклику: {str2}");
+    }
+}
+//через StringBuilder
+using System;
+using System.Text;
+
+class Program
+{
+    static bool CheckForDoubleExclamationMarks(StringBuilder sb)
+    {
+        return sb.ToString().Contains("!!");
+    }
+
+    static void ReplaceDoubleExclamationMarks(StringBuilder sb)
+    {
+        sb.Replace("!!", "**");
+    }
+
+    static void Main()
+    {
+        Console.Write("Введіть перший рядок: ");
+        string str1 = Console.ReadLine();
+
+        StringBuilder sb = new StringBuilder(str1);
+
+        if (CheckForDoubleExclamationMarks(sb))
+        {
+            Console.WriteLine("Знайдено групу з двох знаків оклику \"!!\".");
+        }
+        else
+        {
+            Console.WriteLine("Група з двох знаків оклику не знайдена.");
+        }
+
+        ReplaceDoubleExclamationMarks(sb);
+        Console.WriteLine($"Результат заміни двійок сусідніх знаків оклику: {sb}");
+    }
+}
