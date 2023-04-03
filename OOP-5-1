@@ -1,0 +1,90 @@
+using System;
+
+class Fraction
+{
+    private int numerator;
+    private int denominator;
+
+    public Fraction(int n, int d)
+    {
+        numerator = n;
+        denominator = d;
+    }
+
+    public static Fraction operator +(Fraction f1, Fraction f2)
+    {
+        int n = f1.numerator * f2.denominator + f2.numerator * f1.denominator;
+        int d = f1.denominator * f2.denominator;
+        return new Fraction(n, d);
+    }
+
+    public static Fraction operator -(Fraction f1, Fraction f2)
+    {
+        int n = f1.numerator * f2.denominator - f2.numerator * f1.denominator;
+        int d = f1.denominator * f2.denominator;
+        return new Fraction(n, d);
+    }
+
+    public static Fraction operator *(Fraction f1, Fraction f2)
+    {
+        int n = f1.numerator * f2.numerator;
+        int d = f1.denominator * f2.denominator;
+        return new Fraction(n, d);
+    }
+
+    public static Fraction operator /(Fraction f1, Fraction f2)
+    {
+        int n = f1.numerator * f2.denominator;
+        int d = f1.denominator * f2.numerator;
+        return new Fraction(n, d);
+    }
+
+    public static int operator %(Fraction f1, Fraction f2)
+    {
+        int n1 = f1.numerator * f2.denominator;
+        int n2 = f2.numerator * f1.denominator;
+        int diff = n1 - n2;
+        int mod = diff % (f1.denominator * f2.denominator);
+        return mod;
+    }
+
+    public override string ToString()
+    {
+        return numerator + "/" + denominator;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.Write("Enter numerator 1: ");
+        int n1 = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter denominator 1: ");
+        int d1 = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter numerator 2: ");
+        int n2 = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter denominator 2: ");
+        int d2 = int.Parse(Console.ReadLine());
+
+        Fraction f1 = new Fraction(n1, d1);
+        Fraction f2 = new Fraction(n2, d2);
+
+        Fraction sum = f1 + f2;
+        Fraction diff = f1 - f2;
+        Fraction product = f1 * f2;
+        Fraction quotient = f1 / f2;
+        int mod = f1 % f2;
+
+        Console.WriteLine(f1 + " + " + f2 + " = " + sum);
+        Console.WriteLine(f1 + " - " + f2 + " = " + diff);
+        Console.WriteLine(f1 + " * " + f2 + " = " + product);
+        Console.WriteLine(f1 + " / " + f2 + " = " + quotient);
+        Console.WriteLine(f1 + " % " + f2 + " = " + mod);
+
+        Console.ReadKey();
+    }
+}
