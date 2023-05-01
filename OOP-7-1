@@ -1,0 +1,76 @@
+using System;
+
+namespace StudentsAndInternships
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Student student1 = new Student("Олексій", 2, "101");
+            Console.WriteLine(student1);
+
+            Intern intern1 = new Intern("Олександра", 4, "Київстар");
+            Console.WriteLine(intern1);
+
+            Intern intern2 = new Intern("Вікторія", 3, "Ощадбанк", "Тестування");
+            Console.WriteLine(intern2);
+
+            Console.ReadLine();
+        }
+    }
+
+    class Student
+    {
+        private string name;
+        private int course;
+        private string id;
+
+        public string Name { get { return name; } }
+        public int Course { get { return course; } set { course = value; } }
+        public string Id { get { return id; } set { id = value; } }
+
+        public Student(string name, int course, string id)
+        {
+            this.name = name;
+            this.course = course;
+            this.id = id;
+        }
+
+        public override string ToString()
+        {
+            return $"Студент: {name}, курс {course}, номер заліковки: {id}";
+        }
+    }
+
+    class Intern : Student
+    {
+        private string company;
+        private string position;
+
+        public string Company { get { return company; } set { company = value; } }
+        public string Position { get { return position; } set { position = value; } }
+
+        public Intern(string name, int course, string company) : base(name, course, "")
+        {
+            this.company = company;
+        }
+
+        public Intern(string name, int course, string company, string position) : base(name, course, "")
+        {
+            this.company = company;
+            this.position = position;
+        }
+
+        public override string ToString()
+        {
+            if (position != null)
+            {
+                return $"Студент: {Name}, курс {Course}, стажування в компанії {company} на посаді {position}";
+            }
+            else
+            {
+                return $"Студент: {Name}, курс {Course}, стажується в компанії {company}";
+            }
+        }
+    }
+}
