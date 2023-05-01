@@ -1,0 +1,57 @@
+using System;
+
+class Pair {
+    private double first;
+    private double second;
+
+    public Pair(double first, double second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public double First {
+        get { return first; }
+        set { first = value; }
+    }
+
+    public double Second {
+        get { return second; }
+        set { second = value; }
+    }
+
+    public double Product() {
+        return first * second;
+    }
+}
+
+class Ellipse {
+    private Pair axes;
+
+    public Ellipse(double a, double b) {
+        axes = new Pair(a, b);
+    }
+
+    public Pair Axes {
+        get { return axes; }
+        set { axes = value; }
+    }
+
+    public double Perimeter() {
+        double a = axes.First;
+        double b = axes.Second;
+        return 4 * (Math.PI * a * b + Math.Pow(a - b, 2)) / (a + b);
+    }
+
+    public double Area() {
+        return Math.PI * axes.First * axes.Second;
+    }
+}
+
+class Program {
+    static void Main() {
+        Ellipse ellipse = new Ellipse(3.0, 5.0);
+        Console.WriteLine("Axes: ({0}, {1})", ellipse.Axes.First, ellipse.Axes.Second);
+        Console.WriteLine("Perimeter: {0}", ellipse.Perimeter());
+        Console.WriteLine("Area: {0}", ellipse.Area());
+    }
+}
