@@ -1,0 +1,144 @@
+using System;
+
+abstract class Function
+{
+    public abstract double Compute(double x);
+    public virtual void PrintResult(double x, double y)
+    {
+        Console.WriteLine($"f({x}) = {y}");
+    }
+}
+
+class Ellipse : Function
+{
+    private double a, b;
+
+    public Ellipse(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public override double Compute(double x)
+    {
+        return Math.Sqrt(1 - (x * x) / (a * a)) * b;
+    }
+}
+
+class Hyperbola : Function
+{
+    private double a, b;
+
+    public Hyperbola(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public override double Compute(double x)
+    {
+        return b * Math.Sqrt(1 + (x * x) / (a * a));
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Function ellipse = new Ellipse(3, 4);
+        double x = 2.0;
+        double y = ellipse.Compute(x);
+        ellipse.PrintResult(x, y);
+
+        Function hyperbola = new Hyperbola(3, 4);
+        x = 2.0;
+        y = hyperbola.Compute(x);
+        hyperbola.PrintResult(x, y);
+    }
+}
+
+2 завдання
+using System;
+
+interface IFunction
+{
+    double Compute(double x);
+    void PrintResult(double result);
+}
+
+interface IShape
+{
+    void Draw();
+}
+
+abstract class FunctionBase : IFunction
+{
+    public abstract double Compute(double x);
+    public virtual void PrintResult(double result)
+    {
+        Console.WriteLine("Result: " + result);
+    }
+}
+
+class Ellipse : FunctionBase, IShape
+{
+    private double a;
+    private double b;
+
+    public Ellipse(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public override double Compute(double x)
+    {
+        return a * Math.Sqrt(1 - Math.Pow(x, 2) / Math.Pow(b, 2));
+    }
+
+    public void Draw()
+    {
+        Console.WriteLine("Drawing ellipse with semi-axes " + a + " and " + b);
+    }
+}
+
+class Hyperbola : FunctionBase, IShape
+{
+    private double a;
+    private double b;
+
+    public Hyperbola(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public override double Compute(double x)
+    {
+        return a / x + b;
+    }
+
+    public void Draw()
+    {
+        Console.WriteLine("Drawing hyperbola with parameters " + a + " and " + b);
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        IShape[] shapes = { new Ellipse(2, 1), new Hyperbola(1, 2) };
+        foreach (IShape shape in shapes)
+        {
+            shape.Draw();
+            IFunction function = shape as IFunction;
+            if (function != null)
+            {
+                double result = function.Compute(0.5);
+                function.PrintResult(result);
+            }
+        }
+    }
+}
+
